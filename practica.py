@@ -1,7 +1,8 @@
 import pandas as pd
-import sqlite3
+import sqlite3 as sql
 import os
 
+"""
 def importar_csv_a_db(smartprix_smartphones_april_2026, datos_smartphones, smartphones):
     print(f"Leyendo el archivo {smartprix_smartphones_april_2026}...")
     
@@ -30,3 +31,23 @@ if __name__ == "__main__":
         importar_csv_a_db(archivo_csv, base_datos, tabla)
     else:
         print("Error: No encontré el archivo CSV. Asegúrate de que esté en la misma carpeta.")
+"""
+
+
+conn = sql.connect("practica_datos.db")
+def promocion():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT brand_name, model FROM smartphones
+                     WHERE has_5G = 1 AND price < 8000"""
+        cursor.execute(comando)
+        
+        resultados = cursor.fetchall()
+        print("¡Promoción de smartphones 5G por debajo de $5000!")
+        for marca, modelo in resultados:
+            print(f"- {marca} - {modelo}")
+            
+if __name__ == "__main__":
+    promocion()
