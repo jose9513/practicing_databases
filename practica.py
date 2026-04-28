@@ -49,5 +49,22 @@ def promocion():
         for marca, modelo in resultados:
             print(f"- {marca} - {modelo}")
             
+def publicidad_gamer_viajeros():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT brand_name, model FROM smartphones
+                     ORDER BY "battery_capacity(mAh)" DESC
+                     LIMIT 10"""
+        cursor.execute(comando)
+        
+        resultados = cursor.fetchall()
+        print("¡Top 10 smartphones con mayor batería para gamers y viajeros!")
+        for marca, modelo in resultados:
+            print(f"- {marca} - {modelo}")
+        
+            
 if __name__ == "__main__":
-    promocion()
+    #promocion()
+    publicidad_gamer_viajeros()
