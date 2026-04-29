@@ -63,8 +63,23 @@ def publicidad_gamer_viajeros():
         print("¡Top 10 smartphones con mayor batería para gamers y viajeros!")
         for marca, modelo in resultados:
             print(f"- {marca} - {modelo}")
+            
+def filtro_premiun():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT brand_name, model FROM smartphones
+                     WHERE refresh_rate >= 120"""
+        cursor.execute(comando)
+        
+        resultados = cursor.fetchall()
+        print("¡Smartphones premium con tasa de refresco de 120Hz o más!")
+        for marca, modelo in resultados:
+            print(f"- {marca} - {modelo}")
         
             
 if __name__ == "__main__":
     #promocion()
-    publicidad_gamer_viajeros()
+    #publicidad_gamer_viajeros()
+    filtro_premiun()
