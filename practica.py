@@ -77,9 +77,27 @@ def filtro_premiun():
         print("¡Smartphones premium con tasa de refresco de 120Hz o más!")
         for marca, modelo in resultados:
             print(f"- {marca} - {modelo}")
+            
+
+def modelos_celulares():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT brand_name, COUNT(*) as num_modelos FROM smartphones
+                     GROUP BY brand_name
+                     HAVING COUNT(*) > 20
+                     ORDER BY num_modelos DESC """
+                    
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Marcas con más de 20 modelos en la base de datos!")
+        for marca, num_modelos in resultados:
+            print(f"- {marca}: {num_modelos} modelos")
         
             
 if __name__ == "__main__":
     #promocion()
     #publicidad_gamer_viajeros()
-    filtro_premiun()
+    #filtro_premiun()
+    modelos_celulares()
