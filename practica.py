@@ -94,10 +94,26 @@ def modelos_celulares():
         print("¡Marcas con más de 20 modelos en la base de datos!")
         for marca, num_modelos in resultados:
             print(f"- {marca}: {num_modelos} modelos")
-        
             
+            
+def balance_celulares():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT AVG(price) as precio_promedio, AVG(spec_score) as promedio_spec_score FROM smartphones
+                     GROUP BY spec_score
+                     ORDER BY precio_promedio DESC"""
+                     
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Balance de precios por puntuación de especificaciones!")
+        for precio_promedio, promedio_spec_score in resultados:
+            print(f"- Puntuación {promedio_spec_score}: ${precio_promedio:.2f}")
+
 if __name__ == "__main__":
     #promocion()
     #publicidad_gamer_viajeros()
     #filtro_premiun()
-    modelos_celulares()
+    #modelos_celulares()
+    balance_celulares()
