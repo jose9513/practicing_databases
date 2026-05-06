@@ -110,10 +110,31 @@ def balance_celulares():
         print("¡Balance de precios por puntuación de especificaciones!")
         for precio_promedio, promedio_spec_score in resultados:
             print(f"- Puntuación {promedio_spec_score}: ${precio_promedio:.2f}")
+            
+            
+def os_ram():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT os,
+                            MAX(ram) as bateria_maxima,
+                            MIN(ram) as bateria_minima,
+                            AVG(ram) as ram_promedio
+                     FROM smartphones
+                     GROUP BY os
+                     ORDER BY ram_promedio DESC"""
+                    
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡RAM máxima, mínima y promedio por sistema operativo!")
+        for os, ram_max, ram_min, ram_promedio in resultados:
+            print(f"- {os}: RAM Máxima: {ram_max}GB, RAM Mínima: {ram_min}GB, RAM Promedio: {ram_promedio:.2f}GB")
 
 if __name__ == "__main__":
     #promocion()
     #publicidad_gamer_viajeros()
     #filtro_premiun()
     #modelos_celulares()
-    balance_celulares()
+    #balance_celulares()
+    os_ram()
