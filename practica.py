@@ -131,10 +131,32 @@ def os_ram():
         for os, ram_max, ram_min, ram_promedio in resultados:
             print(f"- {os}: RAM Máxima: {ram_max}GB, RAM Mínima: {ram_min}GB, RAM Promedio: {ram_promedio:.2f}GB")
 
+
+def inventario_por_gama():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT
+                            CASE
+                                WHEN price > 18000 THEN 'Alta Gama'
+                                WHEN price BETWEEN 10000 AND 18000 THEN 'Media Gama'
+                                ELSE 'Baja Gama'
+                            END as gama,
+                            COUNT(*) as cantidad
+                     FROM smartphones
+                     GROUP BY gama"""
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Inventario por gama de precios!")
+        for gama, cantidad in resultados:
+            print(f"- {gama}: {cantidad} modelos")
+
 if __name__ == "__main__":
     #promocion()
     #publicidad_gamer_viajeros()
     #filtro_premiun()
     #modelos_celulares()
     #balance_celulares()
-    os_ram()
+    #os_ram()
+    inventario_por_gama()
