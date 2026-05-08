@@ -151,6 +151,23 @@ def inventario_por_gama():
         print("¡Inventario por gama de precios!")
         for gama, cantidad in resultados:
             print(f"- {gama}: {cantidad} modelos")
+            
+            
+def costo_beneficio():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT brand_name, price, spec_score FROM smartphones
+                     WHERE spec_score > (SELECT AVG(spec_score) FROM smartphones) AND price < (SELECT AVG(price) FROM smartphones)
+                     ORDER BY spec_score DESC
+                     LIMIT 10"""
+                     
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Costo-beneficio!")
+        for marca, precio, puntuacion in resultados:
+            print(f"- {marca}: ${precio:.2f} - Puntuación: {puntuacion}")
 
 if __name__ == "__main__":
     #promocion()
@@ -159,4 +176,5 @@ if __name__ == "__main__":
     #modelos_celulares()
     #balance_celulares()
     #os_ram()
-    inventario_por_gama()
+    #inventario_por_gama()
+    costo_beneficio()
