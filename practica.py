@@ -168,7 +168,22 @@ def costo_beneficio():
         print("¡Costo-beneficio!")
         for marca, precio, puntuacion in resultados:
             print(f"- {marca}: ${precio:.2f} - Puntuación: {puntuacion}")
-
+            
+            
+def precio_y_cantidad_camaras():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT AVG(price) as precio_promedio, rear_camera_count, AVG(vfm_score) as vfm_promedio
+                     FROM smartphones
+                     GROUP BY rear_camera_count
+                     """
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Precio promedio y puntuación VFM por cantidad de cámaras traseras!")
+        for precio_promedio, camaras, vfm_promedio in resultados:
+            print(f"- {camaras} Cámara(s): ${precio_promedio:.2f} - VFM Promedio: {vfm_promedio:.2f}")
 if __name__ == "__main__":
     #promocion()
     #publicidad_gamer_viajeros()
@@ -177,4 +192,5 @@ if __name__ == "__main__":
     #balance_celulares()
     #os_ram()
     #inventario_por_gama()
-    costo_beneficio()
+    #costo_beneficio()
+    precio_y_cantidad_camaras()
