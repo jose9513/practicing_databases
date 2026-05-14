@@ -184,6 +184,25 @@ def precio_y_cantidad_camaras():
         print("¡Precio promedio y puntuación VFM por cantidad de cámaras traseras!")
         for precio_promedio, camaras, vfm_promedio in resultados:
             print(f"- {camaras} Cámara(s): ${precio_promedio:.2f} - VFM Promedio: {vfm_promedio:.2f}")
+            
+            
+def usuarios_exigentes():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT brand_name, model, price, ram, has_5G FROM smartphones
+                     WHERE brand_name IN ('apple', 'samsung') AND
+                     ram >= 8 AND
+                     has_5G = 1
+                     ORDER BY price DESC
+                     LIMIT 10"""
+    cursor.execute(comando)
+    resultados = cursor.fetchall()
+    print("¡Usuarios exigentes!")
+    for marca, modelo, precio, ram, tiene_5G in resultados:
+        print(f"- {marca} {modelo}: ${precio:.2f} - RAM: {ram}GB - 5G: {'Sí' if tiene_5G == 1 else 'No'}")
+
 if __name__ == "__main__":
     #promocion()
     #publicidad_gamer_viajeros()
@@ -193,4 +212,5 @@ if __name__ == "__main__":
     #os_ram()
     #inventario_por_gama()
     #costo_beneficio()
-    precio_y_cantidad_camaras()
+    #precio_y_cantidad_camaras()
+    usuarios_exigentes()
