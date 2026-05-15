@@ -197,11 +197,28 @@ def usuarios_exigentes():
                      has_5G = 1
                      ORDER BY price DESC
                      LIMIT 10"""
-    cursor.execute(comando)
-    resultados = cursor.fetchall()
-    print("¡Usuarios exigentes!")
-    for marca, modelo, precio, ram, tiene_5G in resultados:
-        print(f"- {marca} {modelo}: ${precio:.2f} - RAM: {ram}GB - 5G: {'Sí' if tiene_5G == 1 else 'No'}")
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Usuarios exigentes!")
+        for marca, modelo, precio, ram, tiene_5G in resultados:
+            print(f"- {marca} {modelo}: ${precio:.2f} - RAM: {ram}GB - 5G: {'Sí' if tiene_5G == 1 else 'No'}")
+            
+            
+def monopolio_procesadores():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT processor_brand, COUNT(model) as cantidad
+                     FROM smartphones
+                     GROUP BY processor_brand
+                     HAVING cantidad > 15
+                     ORDER BY cantidad DESC"""
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Monopolio de procesadores!")
+        for marca, cantidad in resultados:
+            print(f"- {marca}: {cantidad} modelos")
 
 if __name__ == "__main__":
     #promocion()
@@ -213,4 +230,5 @@ if __name__ == "__main__":
     #inventario_por_gama()
     #costo_beneficio()
     #precio_y_cantidad_camaras()
-    usuarios_exigentes()
+    #usuarios_exigentes()
+    monopolio_procesadores()
