@@ -219,6 +219,24 @@ def monopolio_procesadores():
         print("¡Monopolio de procesadores!")
         for marca, cantidad in resultados:
             print(f"- {marca}: {cantidad} modelos")
+            
+            
+def filtro_doble():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT brand_name, AVG(price) as precio_promedio FROM smartphones
+                     WHERE has_5G = 1
+                     GROUP BY brand_name
+                     HAVING precio_promedio > 30000
+                     ORDER BY precio_promedio DESC"""
+                     
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Filtro doble: 5G y precio promedio por marca!")
+        for marca, precio_promedio in resultados:
+            print(f"- {marca}: Precio Promedio: ${precio_promedio:.2f}")
 
 if __name__ == "__main__":
     #promocion()
@@ -231,4 +249,5 @@ if __name__ == "__main__":
     #costo_beneficio()
     #precio_y_cantidad_camaras()
     #usuarios_exigentes()
-    monopolio_procesadores()
+    #monopolio_procesadores()
+    filtro_doble()
