@@ -237,6 +237,24 @@ def filtro_doble():
         print("¡Filtro doble: 5G y precio promedio por marca!")
         for marca, precio_promedio in resultados:
             print(f"- {marca}: Precio Promedio: ${precio_promedio:.2f}")
+            
+            
+def cantidad_modelos():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando ="""
+                    SELECT os, COUNT(model) as cantidad_modelos FROM smartphones
+                    GROUP BY os
+                    HAVING cantidad_modelos BETWEEN 10 AND 50
+                    ORDER BY cantidad_modelos DESC"""
+                    
+                    
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Cantidad de modelos por sistema operativo entre 10 y 50!")
+        for os, cantidad in resultados:
+            print(f"- {os}: {cantidad} modelos")
 
 if __name__ == "__main__":
     #promocion()
@@ -250,4 +268,5 @@ if __name__ == "__main__":
     #precio_y_cantidad_camaras()
     #usuarios_exigentes()
     #monopolio_procesadores()
-    filtro_doble()
+    #filtro_doble()
+    cantidad_modelos()
