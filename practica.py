@@ -255,6 +255,26 @@ def cantidad_modelos():
         print("¡Cantidad de modelos por sistema operativo entre 10 y 50!")
         for os, cantidad in resultados:
             print(f"- {os}: {cantidad} modelos")
+            
+            
+def bateria_modelo():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT model, "battery_capacity(mAh)",
+                        CASE
+                            WHEN "battery_capacity(mAh)" > 5000 THEN 'Gamer'
+                            WHEN "battery_capacity(mAh)" BETWEEN 4000 AND 4999 THEN 'Usuario regular'
+                            WHEN "battery_capacity(mAh)" < 4000 THEN 'bateria deficiente'
+                        END as perfil_usuario
+                     FROM smartphones"""
+                     
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Batería por modelo!")
+        for modelo, bateria, perfil in resultados:
+            print(f"- {modelo}: {bateria}mAh - Perfil: {perfil}")
 
 if __name__ == "__main__":
     #promocion()
@@ -269,4 +289,5 @@ if __name__ == "__main__":
     #usuarios_exigentes()
     #monopolio_procesadores()
     #filtro_doble()
-    cantidad_modelos()
+    #cantidad_modelos()
+    bateria_modelo()
