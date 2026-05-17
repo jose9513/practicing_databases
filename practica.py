@@ -275,6 +275,25 @@ def bateria_modelo():
         print("¡Batería por modelo!")
         for modelo, bateria, perfil in resultados:
             print(f"- {modelo}: {bateria}mAh - Perfil: {perfil}")
+            
+            
+def ofertas():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT has_5G, price,
+                        CASE
+                            WHEN has_5G = 1 AND price < 25000 THEN 'Oportunidad de oro'
+                            ELSE 'estandar'
+                        END as estado_competitivo
+                     FROM smartphones"""
+                     
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Ofertas!")
+        for tiene_5G, precio, estado in resultados:
+            print(f"- 5G: {'Sí' if tiene_5G == 1 else 'No'}, Precio: ${precio:.2f}, Estado: {estado}")
 
 if __name__ == "__main__":
     #promocion()
@@ -290,4 +309,5 @@ if __name__ == "__main__":
     #monopolio_procesadores()
     #filtro_doble()
     #cantidad_modelos()
-    bateria_modelo()
+    #bateria_modelo()
+    ofertas()
