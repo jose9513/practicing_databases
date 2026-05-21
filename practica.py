@@ -284,7 +284,7 @@ def ofertas():
         comando = """
                      SELECT has_5G, price,
                         CASE
-                            WHEN has_5G = 1 AND price < 25000 THEN 'Oportunidad de oro'
+                            WHEN has_5G = 1 AND price < 25kk000 THEN 'Oportunidad de oro'
                             ELSE 'estandar'
                         END as estado_competitivo
                      FROM smartphones"""
@@ -294,6 +294,24 @@ def ofertas():
         print("¡Ofertas!")
         for tiene_5G, precio, estado in resultados:
             print(f"- 5G: {'Sí' if tiene_5G == 1 else 'No'}, Precio: ${precio:.2f}, Estado: {estado}")
+            
+            
+def marcas_premium():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT brand_name, AVG(price) as precio_promedio, COUNT(model) as cantidad_modelos FROM smartphones
+                     WHERE spec_score > 80
+                     GROUP BY brand_name
+                     HAVING precio_promedio > 30000
+                     ORDER BY precio_promedio DESC"""
+                     
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Marcas premium con puntuación de especificaciones por encima de 80 y precio promedio por encima de $30000!")
+        for marca, precio_promedio, cantidad in resultados:
+            print(f"- {marca}: Precio Promedio: ${precio_promedio:.2f} - Modelos: {cantidad}")
 
 if __name__ == "__main__":
     #promocion()
@@ -310,4 +328,5 @@ if __name__ == "__main__":
     #filtro_doble()
     #cantidad_modelos()
     #bateria_modelo()
-    ofertas()
+    #ofertas()
+    marcas_premium()
