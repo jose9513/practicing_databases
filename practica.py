@@ -312,6 +312,28 @@ def marcas_premium():
         print("¡Marcas premium con puntuación de especificaciones por encima de 80 y precio promedio por encima de $30000!")
         for marca, precio_promedio, cantidad in resultados:
             print(f"- {marca}: Precio Promedio: ${precio_promedio:.2f} - Modelos: {cantidad}")
+            
+            
+def velocidad_carga():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT model, brand_name, "fast_charging(W)" as velocidad_de_carga,
+                     CASE
+                        WHEN "fast_charging(W)" >= 100 THEN 'Carga extrema'
+                        WHEN "fast_charging(W)" BETWEEN 60 AND 99 THEN 'Carga rapida'
+                        ELSE 'Carga estándar'
+                     END as tipo_carga
+                     FROM smartphones
+                     WHERE brand_name IN ('xiaomi', 'realme')
+                    """
+                    
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Velocidad de carga para Xiaomi y Realme!")
+        for modelo, marca, velocidad, tipo in resultados:
+            print(f"- {marca} {modelo}: {velocidad}W - Tipo de carga: {tipo}")
 
 if __name__ == "__main__":
     #promocion()
@@ -329,4 +351,5 @@ if __name__ == "__main__":
     #cantidad_modelos()
     #bateria_modelo()
     #ofertas()
-    marcas_premium()
+    #marcas_premium()
+    velocidad_carga()
