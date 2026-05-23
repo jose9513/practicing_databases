@@ -334,6 +334,27 @@ def velocidad_carga():
         print("¡Velocidad de carga para Xiaomi y Realme!")
         for modelo, marca, velocidad, tipo in resultados:
             print(f"- {marca} {modelo}: {velocidad}W - Tipo de carga: {tipo}")
+            
+            
+def calidad_modelos():
+    with conn:
+        cursor = conn.cursor()
+        
+        comando = """
+                     SELECT model, brand_name, price,
+                     CASE
+                        WHEN price > 30000 THEN 'Premium'
+                        WHEN price BETWEEN 15000 AND 30000 THEN 'Media Gama'
+                        ELSE 'Baja Ecomonica'
+                     END as gama_mercado
+                     FROM smartphones
+                     WHERE brand_name IN ('motorola', 'samsung')"""
+                     
+        cursor.execute(comando)
+        resultados = cursor.fetchall()
+        print("¡Calidad de modelos para Motorola y Samsung!")
+        for modelo, marca, precio, gama in resultados:
+            print(f"- {marca} {modelo}: ${precio:.2f} - Gama de mercado: {gama}")
 
 if __name__ == "__main__":
     #promocion()
@@ -352,4 +373,5 @@ if __name__ == "__main__":
     #bateria_modelo()
     #ofertas()
     #marcas_premium()
-    velocidad_carga()
+    #velocidad_carga()
+    calidad_modelos()
